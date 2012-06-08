@@ -1,0 +1,6 @@
+<p> Are you sure you want to authorizing rental of an <a href=@{AssetViewR (rentWhat rent)}>item</a>?
+
+<form method=post action=@{RentAuthorizeR rid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

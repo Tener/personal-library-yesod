@@ -1,0 +1,33 @@
+.reviews {
+         border: solid blue 2px
+}
+
+.reviews p {
+         text-indent:25px;
+}
+
+.files {
+         border: solid green 2px
+}
+
+.files p {
+         text-indent:25px;
+}
+
+
+
+form.review-form div {
+     display: inline-block
+}
+
+form button {
+     display: block
+}
+
+.inline-button {
+         display: inline-block
+}
+
+hr.reviews {
+           border-width: 2px;
+}

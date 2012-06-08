@@ -1,0 +1,45 @@
+<p>
+  Edit this asset group <a href="@{AssetGroupEditR gid}">here</a>.
+<p>
+        AssetGroupId: <strong> #{showKey gid} </strong>
+<p> Name: #{assetGroupName grp}
+<p> Description:
+    <div style="background-color:#b0c4de" > #{assetGroupDescription grp}
+
+$if null assetsUsed
+   <p> Elements: none
+$else
+   <p> Elements:
+        <table .actions>
+          $forall ent <- assetsUsed
+            $with key <- entityKey ent
+             $with val <- entityVal ent
+              <tr> 
+                    <td>
+                            <a href=@{AssetViewR key}> #{assetName $ val}
+                    $if canEdit
+                       <td>
+                            <form method=post action=@{AssetGroupElementDeleteUniqueR gid key}>
+                                  <button type=submit> Delete!
+
+
+$if null assetsUnused
+    <p> No elements can be added.
+$else
+   <p> Add element:
+        <table .actions>
+          $forall ent <- assetsUnused
+            $with key <- entityKey ent
+             $with val <- entityVal ent
+              <tr> 
+                    <td>
+                            <a href=@{AssetViewR key}> #{assetName $ val}
+                    $if canEdit
+                       <td>
+                            <form method=post action=@{AssetGroupElementNewR gid key}>
+                                  <button type=submit> Add!
+
+$if canDelete
+  <p> 
+    <strong>
+             <a href=@{AssetGroupDeleteR gid}> Delete this asset group.

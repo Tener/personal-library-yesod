@@ -1,0 +1,6 @@
+<p> Are you sure you want to continue deleting review of an <a href=@{AssetViewR (reviewWhat review)}>item</a>?
+
+<form method=post action=@{ReviewDeleteR rid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

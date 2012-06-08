@@ -1,0 +1,107 @@
+<p>
+  Edit this asset <a href="@{AssetEditR aid}">here</a>.
+$if canDeleteAsset
+ <p>
+   Delete this asset <a href="@{AssetDeleteR aid}">here</a>.
+
+<p>
+        AssetId: <strong> #{showKey aid} </strong>
+<p> Name:
+    <div style="background-color:#b0c4de" > #{assetName asset}
+<p> Kind:
+    <element style="background-color:#b0c4de" >#{showAssetKind $ assetKind $ asset}
+$maybe next <- assetNext asset
+    <p> Next asset: <a href="@{AssetViewR next}">#{formatKey next}</a>
+$nothing
+    <p style="background-color:#f0c4de"> No next asset.
+
+<p> Description:
+    <div style="background-color:#b0c4de" > #{assetDescription asset}
+
+<br>
+
+$if not (null assetGroupsIn)
+    <p> Asset groups this element is in:
+        <table>
+          $forall ent <- assetGroupsIn
+            $with key <- entityKey ent
+             $with val <- entityVal ent
+              <tr> 
+                    <td>
+                            <a href=@{AssetGroupViewR key}> #{assetGroupName $ val}
+                    $if canModifyGroups
+                     <td>
+                             <form method=post action=@{AssetGroupElementDeleteUniqueR key aid}>
+                                   <button type=submit> Remove!
+
+$else
+    <p> This element is not in any group.
+
+$if canModifyGroups
+ $if not (null assetGroupsNot)
+    <p> Asset groups this element can join:
+        <table>
+          $forall ent <- assetGroupsNot
+            $with key <- entityKey ent
+             $with val <- entityVal ent
+              <tr> 
+                    <td>
+                            <a href=@{AssetGroupViewR key}> #{assetGroupName $ val}
+                    <td>
+                            <form method=post action=@{AssetGroupElementNewR key aid}>
+                                   <button type=submit> Add!
+ $else
+    <p> There are no groups to join.
+
+<div .files> Files assosiated with this asset:
+    $if null files
+       <strong> None.
+    $if canUploadFiles
+     <p>
+        <a href=@{FileNewR aid}> Upload new file.
+    $forall Entity fid file <- files
+       <hr .files>
+       <p>
+           <a href=@{FileViewR fid}> View this file
+       $if canDeleteFiles
+        <p>
+            <a href=@{FileDeleteR fid}> Delete this file
+       <p> Sender:
+            ^{displayUserWidget (fileSender file)}
+       <p> Comment: #{fileComment file}
+       <p> File name: #{fileOriginalName file}
+       <p> File type: #{fileOriginalContentType file}
+       <p> File size: #{renderFileSize $ fileSize file}
+
+<div .reviews> User reviews:
+    $if null reviews
+       <strong> None.
+    $forall review <- reviews
+     $with rev <- entityVal review
+        <hr .reviews>
+        <p> Author: 
+            ^{displayUserWidget (reviewUser rev)}
+        <p> Rating: 
+            #{reviewRating rev}
+        <p> Review: 
+            #{reviewContent rev}
+        $if canDelReviews
+         <p> Administration:
+            <form .inline method=post action=@{ReviewDeleteR (entityKey review)}>
+                  <button .inline type=submit> Delete!
+
+$maybe (form,enctype) <- m'form'review
+  $if canPostReviews
+       <form .review-form method=post action=@{ReviewNewR aid} enctype=#{enctype} >
+             ^{form}
+             <button type-submit> Add review!
+          
+
+^{rentedWidget}
+
+<br>
+
+$maybe w <- rentWidget
+       ^{w}
+$nothing
+       <p> You need to <a href=@{AuthR LoginR}>login</a> to rent this asset.

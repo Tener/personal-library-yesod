@@ -1,0 +1,6 @@
+dist/
+static/tmp/
+*.zip
+cabal-dev/
+biblioteczka/
+*.keter

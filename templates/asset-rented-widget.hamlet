@@ -1,0 +1,51 @@
+<p> Rental history:
+<table border=1 >
+       <tr>
+            <th .rental_id>
+                  Actions
+            <th>
+                  taken by
+            <th>
+                  authorized By
+            <th>
+                  day rented
+            <th>
+                  day returned
+            <th>
+                  record created on
+   $forall (rent,rent'user,auth'user'ident) <- results
+       <tr>
+            <td .rental_id>
+                  <a href=@{RentViewR $ entityKey rent}>View
+                  $if isAdmin
+                      \ | 
+                      <a href=@{RentDeleteR $ entityKey rent}>Delete
+                  $if canAuthorize
+                      $if (nothing $ rentFinish $ entityVal rent)
+                          \ | 
+                          <a href=@{RentReturnR $ entityKey rent}>Return
+                      $if (nothing $ rentStart $ entityVal rent)
+                          \ | 
+                          <a href=@{RentAuthorizeR $ entityKey rent}>Authorize
+            <td>
+                  $if canUserSee (entityKey rent'user)
+                     <a href=@{UserViewR $ rentTakenBy $ entityVal rent}> #{userIdent $ entityVal rent'user}
+                  $else
+                     #{userIdent $ entityVal rent'user}
+            <td>
+              $maybe authKey <- rentAuthorizedBy $ entityVal $ rent
+                  $maybe ident <- auth'user'ident
+                     $if canUserSee authKey
+                        <a href=@{UserViewR authKey}> #{ident}
+                     $else
+                        #{ident}
+                  $nothing
+                          no-one (query error?)
+              $nothing
+                          no-one
+            <td>
+                  #{maybe "never" show $ rentStart $ entityVal rent}
+            <td>
+                  #{maybe "never" show $ rentFinish $ entityVal rent}
+            <td>
+                  #{formatRFC1123 $ rentCreated $ entityVal rent}

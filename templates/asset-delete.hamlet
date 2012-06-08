@@ -1,0 +1,6 @@
+<p> Are you sure you want to continue deleting this <a href=@{AssetViewR aid}>asset</a>?
+
+<form method=post action=@{AssetDeleteR aid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

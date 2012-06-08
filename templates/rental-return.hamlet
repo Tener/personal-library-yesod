@@ -1,0 +1,6 @@
+<p> You are about to mark an <a href=@{AssetViewR (rentWhat rent)}>item</a> as returned.
+
+<form method=post action=@{RentReturnR rid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

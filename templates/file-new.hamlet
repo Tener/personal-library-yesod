@@ -1,0 +1,6 @@
+<p> Upload new file.
+
+<form method=post action=@{FileNewR aid} enctype=#{formEnctype}>
+    <table>
+        ^{formWidget}
+    <input type=submit>

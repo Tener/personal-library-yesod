@@ -1,0 +1,49 @@
+/static StaticR Static getStatic
+/auth   AuthR   Auth   getAuth
+
+/favicon.ico FaviconR GET
+/robots.txt RobotsR GET
+
+/ HomeR GET
+
+/asset/all AssetAllR GET
+/asset/all/books AssetAllBooksR GET
+/asset/all/movies AssetAllMoviesR GET
+/asset/all/music AssetAllMusicR GET
+/asset/new AssetNewR GET POST
+/asset/view/#AssetId AssetViewR GET
+/asset/edit/#AssetId AssetEditR GET POST
+/asset/delete/#AssetId AssetDeleteR GET POST
+
+/review/new/#AssetId ReviewNewR POST
+/review/delete/#ReviewId ReviewDeleteR GET POST
+
+/rent/new/#AssetId RentNewR GET POST
+/rent/new_guest/#AssetId RentNewGuestR POST
+/rent/new_other/#AssetId RentNewOtherR POST
+/rent/view/#RentId RentViewR GET
+/rent/authorize/#RentId RentAuthorizeR GET POST
+/rent/delete/#RentId RentDeleteR GET POST
+/rent/return/#RentId RentReturnR GET POST
+
+/asset_group/all AssetGroupViewAllR GET
+/asset_group/new AssetGroupNewR GET POST
+/asset_group/view/#AssetGroupId AssetGroupViewR GET
+/asset_group/edit/#AssetGroupId AssetGroupEditR GET POST
+/asset_group/delete/#AssetGroupId AssetGroupDeleteR GET POST
+
+/asset_group/element/new/#AssetGroupId/#AssetId AssetGroupElementNewR POST
+/asset_group/element/delete/#AssetGroupElementId AssetGroupElementDeleteR POST
+/asset_group/element/delete_unique/#AssetGroupId/#AssetId AssetGroupElementDeleteUniqueR POST
+/asset_group/element/view/#AssetGroupElementId AssetGroupElementViewR GET
+
+/user/view/#UserId UserViewR GET
+/user/edit/#UserId UserEditR POST
+/user/delete/#UserId UserDeleteR GET POST
+/user/all UserAllR GET
+
+/file/new/#AssetId FileNewR GET POST
+/file/delete/#FileId FileDeleteR GET POST
+/file/view/#FileId FileViewR GET
+/file/get/#FileId FileGetR GET
+/file/get/#FileId/#Text FileGetNameR GET

@@ -1,0 +1,17 @@
+<table border=1>
+    <tr>
+          <td>
+               entityKey
+          <td>
+               userIdent
+          <td>
+               role
+
+    $forall user <- users
+       <tr>
+          <td>
+               <strong> <a href="@{UserViewR $ entityKey user}">#{showKey $ entityKey user} </a></strong>
+          <td>
+               #{userIdent $ entityVal $ user}
+          <td>
+               #{showRole $ userRole $ entityVal $ user}

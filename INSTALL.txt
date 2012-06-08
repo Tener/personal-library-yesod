@@ -1,0 +1,45 @@
+Projekt napisany jest w języku Haskell (http://www.haskell.org) i w oparciu o platformę aplikacji webowych Yesod (http://www.yesodweb.com). 
+
+Wymagania:
+ - kompilator GHC w wersji 7.4.1 (obecny w Ubuntu 12.04)
+ - program cabal-install, potrzebny do zbudowania projektu (polecenie 'cabal') - automatycznie ściąga i buduje zależności tego i innych projektów
+ - być może jakieś biblioteki programistyczne w C, ale nic egzotycznego (na pewno zlib, być może więcej)
+
+Kompilacja i uruchomienie projektu (wersja standalone):
+ $ cd biblioteczka
+ $ cabal install                                    # instaluje program domyślnie do katalogu ~/.cabal/bin
+ $ biblioteczka Development                         # zakładając, że poprzedni krok zainstalował plik wykonywalny 'biblioteczka' do PATH.
+ $ dist/build/biblioteczka/biblioteczka Development # w przeciwnym wypadku
+
+Kompilacja i uruchomienie projektu (wersja deweloperska, restart aplikacji przy modyfikacji plików projektu):
+ $ cd biblioteczka
+ $ cabal install yesod-1.0.1.6 # wersja wykorzystana w trakcie tworzenia aplikacji
+ $ yesod devel                 # zakładając, że program 'yesod' zainstalowany w poprzednim kroku znajduje się w PATH
+
+W razie problemów z kompilacją warto spróbować obejść je korzystając z programu 'cabal-dev' - oprogramowania opakowującego program cabal-install i instalującego wszystko do katalogu lokalnego w folderze projektu (a nie globalnie lub dla użytkownika).
+
+ $ cabal install cabal-dev                          # instaluje program cabal-dev domyślnie do katalogu ~/.cabal/bin/
+ $ cabal-dev install                                # kompiluje program i zależności
+ $ cabal-dev/bin/biblioteczka Development           # uruchamia program
+ $ dist/build/biblioteczka/biblioteczka Development # alternatywna komenda, też powinna działać
+
+Program uruchamia się domyślnie nasłuchując na porcie 3001. Stąd następnym krokiem jest otworzenie adresu: http://localhost:3001
+
+Port można zmienić jako opcjonalny drugi argument dla programu wykonywalnego lub statycznie w pliku config/settings.yml.
+
+--------------------------
+-Konfiguracja bazy danych-
+--------------------------
+
+W pliku config/postgresql.yml zapisane są parametry łączenia się z bazą danych. Parametry domyślne są takie:
+
+> Default: &defaults
+>   user: biblioteczka
+>   password: biblioteczka
+>   host: localhost
+>   port: 5432
+>   database: biblioteczka
+>   poolsize: 10
+
+W razie potrzeby można je zmienić tutaj albo użyć by stworzyć właściwe środowisko. Baza danych musi istnieć (polecenie 'createdb'), podobnie jak użytkownik (polecenie 'createuser').
+

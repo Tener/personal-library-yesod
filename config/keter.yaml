@@ -1,0 +1,5 @@
+exec: ../dist/build/biblioteczka/biblioteczka
+args:
+    - production
+host: tener.ignorelist.com
+postgres: true

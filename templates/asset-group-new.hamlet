@@ -1,0 +1,6 @@
+<p> Insert new asset group here:
+
+<form method=post action=@{AssetGroupNewR} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

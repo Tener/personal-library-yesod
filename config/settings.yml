@@ -1,0 +1,23 @@
+Default: &defaults
+#  host: "biblioteczka.skrzetnicki.pl" # any IPv4 host
+#  host: "5.37.146.218"
+#  host: "*4" # any IPv4 host
+  port: 3000
+#  approot: "http://biblioteczka.skrzetnicki.pl:3001"
+#  approot: "http://5.37.146.218:3001"
+#  approot: "http://localhost:3000"
+  copyright: Copyright (c) Krzysztof Skrzętnicki 2012
+  #analytics: UA-YOURCODE
+
+Development:
+  <<: *defaults
+
+Testing:
+  <<: *defaults
+
+Staging:
+  <<: *defaults
+
+Production:
+  approot: "http://biblioteczka.herokuapp.com"
+  <<: *defaults

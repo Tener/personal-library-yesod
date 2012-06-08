@@ -1,0 +1,32 @@
+<table border=1>
+    <tr>
+          <td>
+               AssetId
+          <td>
+               name
+          <td>
+               kind
+          <td>
+               next?
+
+    $forall asset <- assets
+       <tr>
+          <td>
+               \<strong> <a href="@{AssetViewR $ entityKey asset}">#{showKey $ entityKey asset} </a></strong>
+          <td>
+               \<a href="@{AssetViewR $ entityKey asset}"> #{assetName $ entityVal $ asset} </a>
+          <td>
+               #{showAssetKind $ assetKind $ entityVal $ asset}
+          <td>
+               $maybe next <- assetNext $ entityVal $ asset
+                             <a href=@{AssetViewR next}> #{formatKey $ next}
+               $nothing
+                             <em> no next asset
+
+$if auth
+     <br> 
+     <p> Insert new asset here:
+     <form method=post action=@{AssetNewR} enctype=#{enctype}>
+         <table>
+             ^{fwidget}
+         <input type=submit>

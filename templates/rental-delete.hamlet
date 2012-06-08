@@ -1,0 +1,6 @@
+<p> Are you sure you want to continue deleting rental of an <a href=@{AssetViewR (rentWhat rent)}>item</a>?
+
+<form method=post action=@{RentDeleteR rid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

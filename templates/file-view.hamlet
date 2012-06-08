@@ -1,0 +1,11 @@
+<p> Associated with
+    <a href=@{AssetViewR (fileAsset file)}> asset ##{showKey (fileAsset file)}
+<hr />
+<p> User: ^{linkUser $ fileSender file}
+<p> Comment: #{fileComment file}
+<p> File name: #{fileOriginalName file}
+<p> File type: #{fileOriginalContentType file}
+<p> File size: #{renderFileSize $ fileSize file}
+
+<p> 
+    <a href=@{FileGetR fid}>Download this file

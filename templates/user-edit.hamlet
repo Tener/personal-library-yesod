@@ -1,0 +1,6 @@
+<p>
+        UserId: <strong> #{showKey uid} </strong>
+<p>
+        Ident: #{userIdent $ user}
+<p> 
+        Role: #{showRole $ userRole $ user}

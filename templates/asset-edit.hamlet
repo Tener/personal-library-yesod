@@ -1,0 +1,6 @@
+<p> Edit asset parameters:
+
+<form method=post action=@{AssetEditR aid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

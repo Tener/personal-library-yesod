@@ -1,0 +1,17 @@
+<h1> Welcome to media library!
+
+<ol> Here are few things you can check out:
+     
+     $if auth
+      <li> 
+        <a href=@{AssetNewR}> Create new asset.
+     <li> 
+       <a href=@{AssetAllR}> A list of all assets.
+     <li> All 
+       <a href=@{AssetAllMusicR}>of music.
+     <li> All 
+       <a href=@{AssetAllMoviesR}>movies.
+     <li> All 
+       <a href=@{AssetAllBooksR}>books.
+     <li> All 
+       <a href=@{AssetGroupViewAllR}>asset groups.

@@ -1,0 +1,6 @@
+<p> Edit group here:
+
+<form method=post action=@{AssetGroupEditR gid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

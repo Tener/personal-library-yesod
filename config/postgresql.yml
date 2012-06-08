@@ -1,0 +1,24 @@
+Default: &defaults
+  user: biblioteczka
+  password: biblioteczka
+  host: localhost
+  port: 5432
+  database: biblioteczka
+  poolsize: 10
+
+Development:
+  <<: *defaults
+
+Testing:
+  database: biblioteczka_test
+  <<: *defaults
+
+Staging:
+  database: biblioteczka_staging
+  poolsize: 100
+  <<: *defaults
+
+Production:
+  database: biblioteczka_production
+  poolsize: 100
+  <<: *defaults

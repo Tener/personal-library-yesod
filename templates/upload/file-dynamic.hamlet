@@ -1,0 +1,12 @@
+<form id="form1" enctype="multipart/form-data" method="post" action=@{FileNewR aid}>
+    <div class="row">
+      <label for="fileToUpload">Select a File to Upload
+      <br>
+      <input type="file" name="fileToUpload" id="fileToUpload" onchange="fileSelected();">
+    </div>
+    <div id="fileName">
+    <div id="fileSize">
+    <div id="fileType">
+    <div class="row">
+      <input type="button" onclick="uploadFile()" value="Upload">
+    <div id="progressNumber">

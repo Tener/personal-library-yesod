@@ -1,0 +1,21 @@
+<p>
+        UserId: <strong> #{showKey uid} </strong>
+<p>
+        Ident: #{userIdent $ user}
+<p> 
+        Role: #{showRole $ userRole $ user}
+<p> 
+        Name: #{showOrNone $ userName $ user}
+<p> 
+        Address: #{showOrNone $ userAddress $ user}
+<p> 
+        Telephone: #{showOrNone $ userTelephone $ user}
+
+<br> 
+$if isAdmin
+            <p> Edit user:
+             
+                <form style="background-color:#b0c4de" method=post action=@{UserEditR uid} enctype=#{enctype}>
+                    <table>
+                        ^{fwidget}
+                    <input type=submit>

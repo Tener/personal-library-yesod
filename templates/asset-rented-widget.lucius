@@ -1,0 +1,12 @@
+tr {
+    text-align: center
+}
+
+td {
+    width: auto
+}
+
+.rental_id {
+    width: 250px
+}
+

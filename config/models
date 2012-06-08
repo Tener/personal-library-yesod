@@ -1,0 +1,72 @@
+User
+    ident Text
+    role Role
+    name Text Maybe
+    telephone Text Maybe 
+    address Text Maybe 
+    UniqueUser ident
+    deriving Show
+Email
+    email Text
+    user UserId Maybe
+    verkey Text Maybe
+    UniqueEmail email
+Asset
+    name Text
+    description Textarea
+    kind AssetKind
+    next AssetId Maybe
+    deriving Show
+AssetGroup
+    name Text
+    description Textarea
+    deriving Show
+AssetGroupElement
+    asset AssetId
+    group AssetGroupId
+    UniqueAssetGroupElement asset group
+    deriving Show
+Rent
+    what AssetId
+    takenBy UserId
+    authorizedBy UserId Maybe
+    start Day Maybe -- null start means someone WANTS to borrow a thing.
+    finish Day Maybe
+    comment Textarea
+    created UTCTime
+    deriving Show
+Review
+    what AssetId
+    content Textarea
+    rating Int
+    user UserId
+    deriving Show
+File
+    asset AssetId
+    sender UserId
+    path String
+    comment Textarea
+    originalName Text
+    originalContentType Text
+    size Int64
+    deriving Show
+
+ -- Asset
+ --     nextInSeries AssetId Maybe
+ --     name Text
+ --     description Text
+ --     aident Int
+ --     UniqueAsset aident
+ -- AssetGroup
+ --     agident Int
+ --     UniqueAssetGroup agident
+ --     elements [AssetId]
+ -- Lend
+ --     start Day
+ --     lident Int
+ --     elements [AssetId]
+ --     UniqueLend lident
+ -- Review
+ --     content Text
+
+ -- By default this file is used in Model.hs (which is imported by Foundation.hs)

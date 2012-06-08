@@ -1,0 +1,21 @@
+$if free
+   $if isGuest
+       <p .rent> Request a rent for yourself. It must be authorized by priviliged user.
+          <form style="background:#aba1fe" method=post action="@{RentNewGuestR aid}" enctype=#{snd form1}>
+              ^{fst form1}
+              <button type=submit> Request rent now!
+
+   $else
+       <p .rent> Rent this asset below
+          <form style="background:#aba1fe" method=post action="@{RentNewR aid}" enctype=#{snd form2}>
+              ^{fst form2}
+              <button type=submit> Rent yourself now!
+
+   $if isAdmin
+       <p .rent> Rent for other user
+          <form style="background:#aba1fe" method=post action="@{RentNewOtherR aid}" enctype=#{snd form3}>
+              ^{fst form3}
+              <button type=submit> Rent for other user now!
+
+$else
+   <p style="background:#aba12d"> This asset is currently rented/reserved and have to be returned first. 

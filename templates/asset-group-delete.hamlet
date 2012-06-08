@@ -1,0 +1,6 @@
+<p> Are you sure you want to continue deleting this asset group?
+
+<form method=post action=@{AssetGroupDeleteR gid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

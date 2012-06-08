@@ -1,0 +1,6 @@
+<p> Insert new asset here:
+
+<form method=post action=@{AssetNewR} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

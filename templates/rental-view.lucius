@@ -1,0 +1,19 @@
+tr {
+    text-align: center
+}
+
+td {
+    width: auto
+}
+
+td.rental_id {
+    width: 250px
+}
+
+.comment { 
+    background-color: #eeeeee
+}
+
+table, td, tr {
+      border: solid black 1px
+}

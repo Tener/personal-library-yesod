@@ -1,0 +1,6 @@
+<p> Are you sure you want to continue deleting this <a href=@{FileViewR fid}>file</a>?
+
+<form method=post action=@{FileDeleteR fid} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

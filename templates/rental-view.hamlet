@@ -1,0 +1,51 @@
+<p> Rental ##{showKey rid}
+<p> Operations: 
+   $if isAdmin
+     <a href=@{RentDeleteR $ rid}> Delete
+   $if (nothing $ rentFinish $ rent)
+     $if isAdminOrResident
+        \ |
+        <a href=@{RentReturnR $ rid}> Return
+
+<p> Attributes:
+<table>
+            <tr>
+                 <td>
+                       what
+                 <td>
+                       taken by
+                 <td>
+                       authorized By
+                 <td>
+                       day rented
+                 <td>
+                       day returned
+                 <td>
+                       record created on
+            <tr>
+                 <td>
+                       <a href=@{AssetViewR $ rentWhat $ rent}> item id=#{showKey $ rentWhat $ rent}
+                 <td>
+                   $if canUserSee (rentTakenBy rent)
+                       <a href=@{UserViewR $ rentTakenBy $ rent}> user id=#{showKey $ rentTakenBy $ rent}
+                   $else
+                       user id=#{showKey $ rentTakenBy $ rent}
+                 <td>
+                       $maybe authid <- rentAuthorizedBy $ rent
+                               $if canUserSee authid
+                                  <a href=@{UserViewR $ authid}> user id=#{showKey authid}
+                               $else
+                                  id=#{show authid}
+                       $nothing
+                               no-one
+                 <td>
+                       #{maybe "never" show $ rentStart $ rent}
+                 <td>
+                       #{maybe "never" show $ rentFinish $ rent}
+                 <td>
+                       #{formatRFC1123 $ rentCreated $ rent}
+
+<br>
+<p> Comment:
+<p .comment>
+        #{rentComment rent}

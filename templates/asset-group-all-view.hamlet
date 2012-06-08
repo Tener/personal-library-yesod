@@ -1,0 +1,21 @@
+<table border=1>
+    <tr>
+          <td>
+               AssetGroupId
+          <td>
+               name
+    $forall grp <- grps
+       <tr>
+          <td>
+               <strong> <a href="@{AssetGroupViewR $ entityKey grp}">#{showKey $ entityKey grp} </a>
+          <td>
+               <a href="@{AssetGroupViewR $ entityKey grp}"> #{assetGroupName $ entityVal $ grp}
+
+<br> 
+
+$if auth
+    <p> Create new asset group here:
+    <form method=post action=@{AssetGroupNewR} enctype=#{enctype}>
+        <table>
+            ^{fwidget}
+        <input type=submit>
