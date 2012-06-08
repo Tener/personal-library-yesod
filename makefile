@@ -14,7 +14,7 @@ nginx:
 
 heroku-stage1:
 	git pull
-	cabal-dev install -fheroku --ghc-options=-split-objs
+	cabal-dev install -fheroku --enable-split-objs --disable-documentation --disable-library-profiling --disable-executable-profiling
 	strip dist/build/personallibrary/personallibrary
 	scp dist/build/personallibrary/personallibrary raptor.local:/home/tener/dokumenty/projekty/personal-library-yesod/personallibrary-freshbuild
 
