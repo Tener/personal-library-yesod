@@ -11,7 +11,7 @@
 #     mv deploy/Procfile ./
 #
 # * Create an empty package.json
-#     echo '{ "name": "biblioteczka", "version": "0.0.1", "dependencies": {} }' >> package.json
+#     echo '{ "name": "personallibrary", "version": "0.0.1", "dependencies": {} }' >> package.json
 #
 # Postgresql Yesod setup:
 #
@@ -85,7 +85,7 @@
 # * add your web executable binary (referenced below) to the git repository
 #
 #     git checkout deploy
-#     git add ./dist/build/biblioteczka/biblioteczka
+#     git add ./dist/build/personallibrary/personallibrary
 #     git commit -m deploy
 #
 # * push to Heroku
@@ -94,4 +94,4 @@
 
 
 # Heroku configuration that runs your app
-web: ./dist/build/biblioteczka/biblioteczka production -p $PORT
+web: ./dist/build/personallibrary/personallibrary production -p $PORT

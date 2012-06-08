@@ -1,4 +1,4 @@
-name:              biblioteczka
+name:              personallibrary
 version:           0.0.0
 license:           BSD3
 license-file:      LICENSE
@@ -10,7 +10,7 @@ category:          Web
 stability:         Experimental
 cabal-version:     >= 1.8
 build-type:        Simple
-homepage:          http://biblioteczka.yesodweb.com/
+homepage:          http://personallibrary.yesodweb.com/
 
 Flag dev
     Description:   Turn on development settings, like auto-reload templates.
@@ -103,7 +103,7 @@ library
                  , unordered-containers
                  , heroku
 
-executable         biblioteczka
+executable         personallibrary
     if flag(library-only)
         Buildable: False
 
@@ -111,7 +111,7 @@ executable         biblioteczka
     ghc-options:       -optl-pthread
     hs-source-dirs:    dist
     build-depends:     base
-                     , biblioteczka
+                     , personallibrary
                      , yesod-default
 
 test-suite test
@@ -132,7 +132,7 @@ test-suite test
                        FlexibleContexts
 
     build-depends: base
-                 , biblioteczka
+                 , personallibrary
                  , yesod-test
                  , yesod-default
                  , yesod-core

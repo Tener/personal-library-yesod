@@ -1,5 +1,5 @@
 {-# LANGUAGE PackageImports #-}
-import "biblioteczka" Application (getApplicationDev)
+import "personallibrary" Application (getApplicationDev)
 import Network.Wai.Handler.Warp
     (runSettings, defaultSettings, settingsPort)
 import Control.Concurrent (forkIO)

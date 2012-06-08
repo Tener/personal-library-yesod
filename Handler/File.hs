@@ -37,7 +37,7 @@ import Data.Int (Int64)
 -- upload
 
 uploadDirectory :: FilePath -- FIXME: make this configurable
-uploadDirectory = "/var/tmp/biblioteczka/incoming"
+uploadDirectory = "/var/tmp/personallibrary/incoming"
 
 randomFileName :: IO FilePath
 randomFileName = do

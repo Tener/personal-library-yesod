@@ -1,4 +1,4 @@
-exec: ../dist/build/biblioteczka/biblioteczka
+exec: ../dist/build/personallibrary/personallibrary
 args:
     - production
 host: tener.ignorelist.com
