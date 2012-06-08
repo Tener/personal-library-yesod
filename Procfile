@@ -94,4 +94,4 @@
 
 
 # Heroku configuration that runs your app
-web: ./personallibraryHeroku production -p $PORT
+web: ./dist/build/personallibrary/personallibrary production -p $PORT

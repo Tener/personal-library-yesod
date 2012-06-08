@@ -16,9 +16,8 @@ heroku-oneshot:
 	git pull
 	cabal-dev install -fheroku --enable-split-objs --disable-documentation --disable-library-profiling --disable-executable-profiling
 	strip dist/build/personallibrary/personallibrary
-	cp dist/build/personallibrary/personallibrary personallibraryHeroku
 	git checkout -b deploy
-	git add -f personallibraryHeroku
+	git add -f dist/build/personallibrary/personallibrary
 	git commit -m "binary"
 	git push -f heroku deploy:master
 	git checkout master
