@@ -16,12 +16,12 @@ heroku-stage1:
 	git pull
 	cabal-dev install -fheroku --ghc-options=-split-objs
 	strip dist/build/personallibrary/personallibrary
-	scp dist/build/personallibrary/personallibrary raptor.local:/home/tener/dokumenty/projekty/personallibrary/personallibrary-freshbuild
+	scp dist/build/personallibrary/personallibrary raptor.local:/home/tener/dokumenty/projekty/personal-library-yesod/personallibrary-freshbuild
 
 heroku-stage2:
 	git checkout -b deploy
 	mv personallibrary-freshbuild personallibraryHeroku
-	git add zapisyOazaHeroku
+	git add personallibraryHeroku
 	git commit -m "binary"
 	git push -f heroku deploy:master
 	git checkout master
