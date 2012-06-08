@@ -12,6 +12,18 @@ nginx:
 	make keter
 	sudo cp personallibrary.keter /opt/keter/incoming/
 
+heroku-oneshot:
+	git pull
+	cabal-dev install -fheroku --enable-split-objs --disable-documentation --disable-library-profiling --disable-executable-profiling
+	strip dist/build/personallibrary/personallibrary
+	cp dist/build/personallibrary/personallibrary personallibraryHeroku
+	git checkout -b deploy
+	git add -f personallibraryHeroku
+	git commit -m "binary"
+	git push -f heroku deploy:master
+	git checkout master
+	git branch -D deploy
+
 heroku-stage1:
 	git pull
 	cabal-dev install -fheroku --enable-split-objs --disable-documentation --disable-library-profiling --disable-executable-profiling
