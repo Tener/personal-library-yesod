@@ -15,5 +15,5 @@ Staging:
   <<: *defaults
 
 Production:
-  approot: "http://biblioteczka.herokuapp.com"
+  approot: "http://personallibrary.herokuapp.com"
   <<: *defaults
