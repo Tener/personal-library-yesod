@@ -21,7 +21,7 @@ heroku-stage1:
 heroku-stage2:
 	git checkout -b deploy
 	mv personallibrary-freshbuild personallibraryHeroku
-	git add personallibraryHeroku
+	git add -f personallibraryHeroku
 	git commit -m "binary"
 	git push -f heroku deploy:master
 	git checkout master

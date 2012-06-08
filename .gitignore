@@ -4,3 +4,5 @@ static/tmp/
 cabal-dev/
 personallibrary/
 *.keter
+*-freshbuild
+personallibraryHeroku
