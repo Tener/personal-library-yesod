@@ -1,0 +1,6 @@
+<p> Are you sure you want to continue deleting this <a href=@{UserViewR key}>user</a>?
+
+<form method=post action=@{UserDeleteR key} enctype=#{enctype}>
+    <table>
+        ^{fwidget}
+    <input type=submit>

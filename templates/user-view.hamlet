@@ -19,3 +19,8 @@ $if isAdmin
                     <table>
                         ^{fwidget}
                     <input type=submit>
+
+            <br> 
+            <p> 
+                <strong>
+                        <a href=@{UserDeleteR uid}> Delete user

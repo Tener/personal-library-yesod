@@ -6,11 +6,11 @@ User
     address Text Maybe 
     UniqueUser ident
     deriving Show
-Email
-    email Text
-    user UserId Maybe
-    verkey Text Maybe
-    UniqueEmail email
+-- Email
+--     email Text
+--     user UserId Maybe
+--     verkey Text Maybe
+--     UniqueEmail email
 Asset
     name Text
     description Textarea

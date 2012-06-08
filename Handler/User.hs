@@ -7,6 +7,7 @@ import Control.Arrow
 import qualified Data.Text
 
 import Handler.Utils
+import Handler.File(deleteFile)
 
 -- user
 
@@ -50,3 +51,39 @@ getUserAllR = do
   defaultLayout $ do
       setTitle "A list of all users."
       $(widgetFile "users-all")
+
+--- delete user
+
+userDeleteForm = renderTable (const <$> areq areYouSureField "Are you sure?" (Just False))
+  where areYouSureField = check isSure boolField
+        isSure False = Left ("You must be sure to delete a user" :: Text)
+        isSure True = Right True
+
+getUserDeleteR ::UserId ->  Handler RepHtml
+getUserDeleteR key = do
+  user :: User <- runDB $ get404 key
+  (fwidget, enctype) <- generateFormPost userDeleteForm
+  defaultLayout $ do
+      setTitle "Deleting a user."
+      $(widgetFile "user-delete")
+
+postUserDeleteR ::UserId ->  Handler RepHtml
+postUserDeleteR key = do
+  user :: User <- runDB $ get404 key
+  ((result,fwidget), enctype) <- runFormPost userDeleteForm
+
+  case result of
+    FormSuccess _ -> do
+                files <- runDB $ selectList [FileSender ==. key] []
+                mapM_ deleteFile files
+                runDB $ do
+                      deleteWhere [RentTakenBy ==. key]
+                      updateWhere [RentAuthorizedBy ==. Just key] [RentAuthorizedBy =. Nothing]
+                      deleteWhere [ReviewUser ==. key]
+                      delete key
+                defaultLayout [whamlet|
+                               <p> <strong>User deleted.</strong> |]
+    _ -> defaultLayout $ do
+              setTitle "Deleting a user."
+              $(widgetFile "user-delete")
+

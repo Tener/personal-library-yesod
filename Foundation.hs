@@ -165,6 +165,7 @@ instance Yesod App where
         Just uid'logged | uid == uid'logged -> return Authorized
                         | otherwise -> requireRole [AdminRole, ResidentRole, FriendRole]
     isAuthorized (UserEditR _) _ = requireRole [AdminRole]
+    isAuthorized (UserDeleteR _) _ = requireRole [AdminRole]
     isAuthorized (UserAllR   ) _ = requireRole [AdminRole, ResidentRole, FriendRole]
 
     isAuthorized (FileNewR _) _       = requireRole [AdminRole,ResidentRole,FriendRole]
