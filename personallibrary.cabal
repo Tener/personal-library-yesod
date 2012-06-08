@@ -99,9 +99,13 @@ library
                  , random
                  , unix-compat
                  , prefix-units
+                 -- heroku
                  , aeson
                  , unordered-containers
                  , heroku
+                 -- file bundle downloads
+                 , zip-archive
+                 , digest
 
 executable         personallibrary
     if flag(library-only)
