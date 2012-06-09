@@ -39,8 +39,10 @@ library
                      Handler.Rent             
                      Handler.Review           
                      Handler.User             
-                     Handler.File             
                      Handler.Utils
+
+                     Handler.File             
+                     Codec.Archive.ZipHack
 
 
     if flag(dev) || flag(library-only)
@@ -99,6 +101,7 @@ library
                  , random
                  , unix-compat
                  , prefix-units
+                 , text-format
                  -- heroku
                  , aeson
                  , unordered-containers
@@ -106,6 +109,15 @@ library
                  -- file bundle downloads
                  , zip-archive
                  , digest
+                 , old-locale
+                 , http-types
+                 , wai
+                 , binary
+                 , zlib
+                 , utf8-string
+                 , unix
+                 , containers
+                 , old-time
 
 executable         personallibrary
     if flag(library-only)

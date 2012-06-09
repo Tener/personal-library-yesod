@@ -1,20 +1,4 @@
-{-# LANGUAGE ScopedTypeVariables #-}
-
-{-
-
-config/models part:
-
-File
-    asset AssetId
-    sender UserId
-    path String
-    comment Textarea
-    originalName Text
-    originalContentType Text
-    size Int64
-    deriving Show
-
--}
+{-# LANGUAGE OverloadedStrings, ScopedTypeVariables #-}
 
 module Handler.File where
 
@@ -33,6 +17,16 @@ import qualified Data.List
 import System.Directory
 import qualified System.PosixCompat -- file sizes
 import Data.Int (Int64)
+import Data.Time
+import Data.Time.Clock.POSIX
+import Data.Text.Format
+import qualified Data.Text.Encoding
+import qualified Data.Text.Lazy
+import Data.Digest.CRC32 (crc32)
+import qualified System.Locale
+import Codec.Archive.ZipHack
+import Network.Wai (responseLBS)
+import Network.HTTP.Types (ok200)
 
 -- upload
 
@@ -75,8 +69,9 @@ postFileNewR' aid = do
     FormSuccess (fi,info) -> do
                  fn <- liftIO randomFileName
                  liftIO (LBS.writeFile fn (fileContent fi))
+                 let crc = crc32 (fileContent fi)
                  fsize <- liftIO $ getFileSize fn
-                 let newFile = File aid (entityKey user) fn info (fileName fi) (fileContentType fi) fsize
+                 let newFile = File aid (entityKey user) fn info (fileName fi) (fileContentType fi) fsize crc
                  fid <- runDB $ insert newFile
                  redirect (FileViewR fid)
     _ -> return ()
@@ -109,13 +104,14 @@ postFileNewR aid = do
       fn <- liftIO randomFileName -- generate new name
       liftIO $ renameFile (WAI.fileContent waiFileInfo) fn -- rename received file
       fsize <- liftIO $ getFileSize fn -- get file size
+      crc <- liftIO (fmap crc32 (LBS.readFile fn))
       let bs2t = Data.Text.Encoding.decodeUtf8With lenientDecode
           comment'ta = Textarea (bs2t comm)
           uid = entityKey user
           declared'fname = bs2t (WAI.fileName waiFileInfo)
           declared'ctype = bs2t (WAI.fileContentType waiFileInfo)
           
-          new = File aid uid fn comment'ta declared'fname declared'ctype fsize
+          new = File aid uid fn comment'ta declared'fname declared'ctype fsize crc
       fid <- runDB $ insert new
       redirect (FileViewR fid)
 
@@ -142,7 +138,7 @@ getFileGetR fid = do
   file <- runDB $ get404 fid
   redirect (FileGetNameR fid (fileOriginalName file))
 
-getFileGetNameR :: FileId -> Text -> Handler RepHtml
+getFileGetNameR :: FileId -> Text -> Handler RepHtml -- FIXME: figure out right reply content type
 getFileGetNameR fid _name = do
   file <- runDB $ get404 fid
   setHeader "Content-Disposition" (Data.Text.concat ["attachment; filename=\"",(fileOriginalName file), "\";"])
@@ -151,19 +147,66 @@ getFileGetNameR fid _name = do
       fct = encodeContentType $ fileOriginalContentType file
   sendFile (fct) (filePath file)
 
--- delete
+-- batch download
 
--- getFileDeleteR :: FileId -> Handler RepHtml
--- getFileDeleteR fid = do
---   defaultLayout $ do
---        setTitle "Delete file."
---        $(widgetFile "file-delete")
---  
--- postFileDeleteR :: FileId -> Handler RepHtml
--- postFileDeleteR fid = do
---   defaultLayout $ do
---        setTitle "Delete file."
---        $(widgetFile "file-delete")
+getFilesForAssetGetR :: AssetId -> Handler RepHtml
+getFilesForAssetGetR key = do
+  asset <- runDB $ get404 key
+  now <- liftIO getCurrentTime
+  now'posix <- liftIO getPOSIXTime
+
+  files <- runDB $ selectList [FileAsset ==. key] [Asc FileId]
+
+  let lt2lbs t = t2lbs . Data.Text.Lazy.toStrict $ t 
+      t2lbs t = LBS.fromChunks . singletonList . Data.Text.Encoding.encodeUtf8 $ t
+      singletonList x = [x]
+
+      readFileFromDisk (Entity fid file) = LBS.readFile (filePath file)
+      fileEntry (Entity fid file) = 
+        let name = Data.Text.Format.format "{}/{}" ((Shown fid), (fileOriginalName file))
+            -- fixme: error/warning for too big files 
+            size = fromIntegral . fileSize $ file
+        
+            e = Entry { eRelativePath = read . show $ name
+                       , eCompressionMethod = NoCompression
+                       , eLastModified = round now'posix
+                       , eCRC32 = fileCrc file
+                       , eCompressedSize = size
+                       , eUncompressedSize = size
+                       , eExtraField = LBS.empty
+                       , eFileComment = t2lbs $ unTextarea $ fileComment file
+                       , eInternalFileAttributes = 0
+                       , eExternalFileAttributes = 0
+                       }
+                        in e
+
+  files'lazy <- liftIO $ mapM readFileFromDisk files
+  let entries = map fileEntry files
+
+  let comment = Data.Text.Format.format "File bundle for asset {} - {}" (Shown key, assetName asset)
+      archive =
+         Archive
+         { zComment = lt2lbs comment
+         , zSignature = Nothing
+         , zEntries = entries
+         }
+
+--  let now'fmt = Data.Time.formatTime System.Locale.defaultTimeLocale "%s" now
+--      fname = Data.Text.Format.format "asset_{}_file_bundle_{}.zip" (Shown key, now'fmt)
+--      cont'disp = Data.Text.Encoding.encodeUtf8 $ Data.Text.Format.format "attachment; filename=\"{}\";" [fname]
+----  setHeader "Content-Disposition" (Data.Text.Lazy.toStrict cont'disp)
+--  setHeader "X-Content-Type-Options" "nosniff"
+-- 
+--  archive <- liftIO $ addFilesToArchive [OptRecursive, OptVerbose] archiveTemplate [uploadDirectory]
+
+  let h1 = ("Content-Disposition","attachment; filename=archive-all.zip;") -- fixme: provide filename different for each asset
+      h2 = ("X-Content-Type-Options","nosniff")
+      h3 = ("Content-Length","") -- fixme: calculate exact actual content length.
+  
+  sendWaiResponse (responseLBS ok200 [h1,h2] (fromArchive files'lazy archive))
+  
+
+-- delete
 
 fileDeleteForm = renderTable (const <$> areq areYouSureField "Are you sure?" (Just False))
   where areYouSureField = check isSure boolField

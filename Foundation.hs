@@ -171,6 +171,7 @@ instance Yesod App where
     isAuthorized (FileNewR _) _       = requireRole [AdminRole,ResidentRole,FriendRole]
     isAuthorized (FileDeleteR _) _    = requireRole [AdminRole]
     isAuthorized (FileGetR _) _       = requireRole [AdminRole,ResidentRole,FriendRole]
+    isAuthorized (FilesForAssetGetR _) _ = requireRole [AdminRole,ResidentRole,FriendRole]
     isAuthorized (FileGetNameR _ _) _ = requireRole [AdminRole,ResidentRole,FriendRole]
     isAuthorized (FileViewR _) _      = requireRole [AdminRole,ResidentRole,FriendRole]
 

@@ -45,5 +45,6 @@
 /file/new/#AssetId FileNewR GET POST
 /file/delete/#FileId FileDeleteR GET POST
 /file/view/#FileId FileViewR GET
+/file/asset/getall/#AssetId FilesForAssetGetR GET
 /file/get/#FileId FileGetR GET
 /file/get/#FileId/#Text FileGetNameR GET

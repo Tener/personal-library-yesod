@@ -9,6 +9,7 @@ import Database.Persist.Store
 import Database.Persist.Quasi
 import Data.Time
 import Data.Int (Int64)
+import Data.Word (Word32)
 
 data Role = AdminRole | ResidentRole | FriendRole | GuestRole
     deriving (Show, Read, Eq, Enum, Bounded)

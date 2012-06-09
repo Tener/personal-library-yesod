@@ -56,6 +56,8 @@ $if canModifyGroups
 <div .files> Files assosiated with this asset:
     $if null files
        <strong> None.
+    $else
+       <a href=@{FilesForAssetGetR aid}> <strong>Get all files in single archive.</strong>
     $if canUploadFiles
      <p>
         <a href=@{FileNewR aid}> Upload new file.

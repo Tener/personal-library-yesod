@@ -49,6 +49,7 @@ File
     originalName Text
     originalContentType Text
     size Int64
+    crc Word32
     deriving Show
 
  -- Asset
