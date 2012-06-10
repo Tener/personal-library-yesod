@@ -5,28 +5,26 @@ module Handler.File where
 import Import
 import Handler.Utils
 
-import System.Random
-import System.FilePath
+import Codec.Archive.ZipHack
 import Control.Monad
-import qualified Data.ByteString.Lazy as LBS
-import qualified Data.Text.Encoding
-import Data.Text.Encoding.Error
-import qualified Data.Text
-import qualified Network.Wai.Parse as WAI
-import qualified Data.List
-import System.Directory
-import qualified System.PosixCompat -- file sizes
+import Data.Digest.CRC32 (crc32)
 import Data.Int (Int64)
+import Data.Text.Encoding.Error
+import Data.Text.Format
 import Data.Time
 import Data.Time.Clock.POSIX
-import Data.Text.Format
+import System.Directory
+import System.FilePath
+import System.Random
+import qualified Blaze.ByteString.Builder.ByteString as Builder
+import qualified Data.ByteString.Lazy as LBS
+import qualified Data.List
+import qualified Data.Text
 import qualified Data.Text.Encoding
 import qualified Data.Text.Lazy
-import Data.Digest.CRC32 (crc32)
+import qualified Network.Wai.Parse as WAI
 import qualified System.Locale
-import Codec.Archive.ZipHack
-import Network.Wai (responseLBS)
-import Network.HTTP.Types (ok200)
+import qualified System.PosixCompat -- file sizes
 
 -- upload
 
@@ -149,7 +147,7 @@ getFileGetNameR fid _name = do
 
 -- batch download
 
-getFilesForAssetGetR :: AssetId -> Handler RepHtml
+getFilesForAssetGetR :: AssetId -> Handler RepPlain
 getFilesForAssetGetR key = do
   asset <- runDB $ get404 key
   now <- liftIO getCurrentTime
@@ -161,7 +159,7 @@ getFilesForAssetGetR key = do
       t2lbs t = LBS.fromChunks . singletonList . Data.Text.Encoding.encodeUtf8 $ t
       singletonList x = [x]
 
-      readFileFromDisk (Entity fid file) = LBS.readFile (filePath file)
+      readFileFromDisk (Entity _ file) = LBS.readFile (filePath file)
       fileEntry (Entity fid file) = 
         let name = Data.Text.Format.format "{}/{}" ((Shown fid), (fileOriginalName file))
             -- fixme: error/warning for too big files 
@@ -194,16 +192,17 @@ getFilesForAssetGetR key = do
 --  let now'fmt = Data.Time.formatTime System.Locale.defaultTimeLocale "%s" now
 --      fname = Data.Text.Format.format "asset_{}_file_bundle_{}.zip" (Shown key, now'fmt)
 --      cont'disp = Data.Text.Encoding.encodeUtf8 $ Data.Text.Format.format "attachment; filename=\"{}\";" [fname]
-----  setHeader "Content-Disposition" (Data.Text.Lazy.toStrict cont'disp)
---  setHeader "X-Content-Type-Options" "nosniff"
--- 
---  archive <- liftIO $ addFilesToArchive [OptRecursive, OptVerbose] archiveTemplate [uploadDirectory]
+  setHeader "Content-Disposition" "attachment; filename=archive-all.zip;" -- (Data.Text.Lazy.toStrict cont'disp)
+  setHeader "X-Content-Type-Options" "nosniff"
 
-  let h1 = ("Content-Disposition","attachment; filename=archive-all.zip;") -- fixme: provide filename different for each asset
-      h2 = ("X-Content-Type-Options","nosniff")
-      h3 = ("Content-Length","") -- fixme: calculate exact actual content length.
-  
-  sendWaiResponse (responseLBS ok200 [h1,h2] (fromArchive files'lazy archive))
+--  let h1 = ("Content-Disposition","attachment; filename=archive-all.zip;") -- fixme: provide filename different for each asset
+--      h2 = ("X-Content-Type-Options","nosniff")
+--      -- h3 = ("Content-Length","") -- fixme: calculate exact actual content length.
+--  
+--  sendWaiResponse (responseLBS ok200 [h1,h2] (fromArchive files'lazy archive))
+
+  let content = ContentBuilder (Builder.fromLazyByteString (fromArchive files'lazy archive)) Nothing -- fixme: calculate response length
+  return (RepPlain content)
   
 
 -- delete

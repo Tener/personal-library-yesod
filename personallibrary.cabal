@@ -118,6 +118,7 @@ library
                  , unix
                  , containers
                  , old-time
+                 , blaze-builder
 
 executable         personallibrary
     if flag(library-only)
