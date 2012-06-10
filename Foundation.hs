@@ -184,9 +184,7 @@ instance Yesod App where
 --  Commented out on purpose: we will get a compile time warning when we dont handle a route.
 --  isAuthorized _ _ = return Authorized
 
-    maximumContentLength _ (Just (FileNewR _)) = let limit = 2 * 1024 * 1024 * 1024 in -- 2 gigabytes
-                                                 if limit < 0 then maxBound else limit -- fix for 32 bit systems
-                                                 -- fixme: maybe issue ticket for Int64/Integer for Yesod?
+    maximumContentLength _ (Just (FileNewR _)) = (2 * 1024 * 1024 * 1024)-1 -- almost 2 gigabytes, but works when Int is 32 bit type
                                                  
     maximumContentLength _ _ = 2 * 1024 * 1024 -- 2 megabytes
 
