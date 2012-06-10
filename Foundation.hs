@@ -181,12 +181,15 @@ instance Yesod App where
     isAuthorized (StaticR _) _ = return Authorized
     isAuthorized (AuthR _) _   = return Authorized
     isAuthorized HomeR _       = return Authorized
-
-    maximumContentLength _ (Just (FileNewR _)) = 2 * 1024 * 1024 * 1024 -- 2 gigabytes
-    maximumContentLength _ _ = 2 * 1024 * 1024 -- 2 megabytes
-
 --  Commented out on purpose: we will get a compile time warning when we dont handle a route.
 --  isAuthorized _ _ = return Authorized
+
+    maximumContentLength _ (Just (FileNewR _)) = let limit = 2 * 1024 * 1024 * 1024 in -- 2 gigabytes
+                                                 if limit < 0 then maxBound else limit -- fix for 32 bit systems
+                                                 -- fixme: maybe issue ticket for Int64/Integer for Yesod?
+                                                 
+    maximumContentLength _ _ = 2 * 1024 * 1024 -- 2 megabytes
+
 
 requireRole :: (YesodPersist m, PersistStore (YesodPersistBackend m) (GHandler s m), YesodAuth m, AuthId m ~ Key (YesodPersistBackend m) (UserGeneric (YesodPersistBackend m))) => [Role] -> GHandler s m AuthResult
 requireRole roles = do
