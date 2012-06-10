@@ -26,7 +26,7 @@ getAssetGroupDeleteR gid = do
   (fwidget, enctype) <- generateFormPost areYouSureDeleteForm
   defaultLayout $ do
       setTitle "Deleting an asset."
-      $(widgetFile "asset-group-delete")
+      $(widgetFile "asset-group/delete")
     
 postAssetGroupDeleteR :: AssetGroupId -> Handler RepHtml
 postAssetGroupDeleteR gid = do
@@ -42,14 +42,14 @@ postAssetGroupDeleteR gid = do
                                         <p> <strong>Asset group deleted.</strong> |]
     _ -> defaultLayout $ do
               setTitle "Deleting an asset group."
-              $(widgetFile "asset-group-delete")
+              $(widgetFile "asset-group/delete")
 
 getAssetGroupNewR :: Handler RepHtml
 getAssetGroupNewR = do
   (fwidget, enctype) <- generateFormPost (assetGroupForm Nothing)
   defaultLayout $ do
       setTitle "A new asset group."
-      $(widgetFile "asset-group-new")
+      $(widgetFile "asset-group/new")
 
 postAssetGroupNewR :: Handler RepHtml
 postAssetGroupNewR = do
@@ -60,7 +60,7 @@ postAssetGroupNewR = do
                   redirect (AssetGroupViewR aid)
     _ -> defaultLayout $ do
            setTitle "A new asset group."
-           $(widgetFile "asset-group-new")
+           $(widgetFile "asset-group/new")
 
 getAssetGroupEditR :: AssetGroupId -> Handler RepHtml
 getAssetGroupEditR gid = do
@@ -68,7 +68,7 @@ getAssetGroupEditR gid = do
   (fwidget, enctype) <- generateFormPost (assetGroupForm (Just grp))
   defaultLayout $ do
       setTitle "Edit asset group."
-      $(widgetFile "asset-group-edit")
+      $(widgetFile "asset-group/edit")
 
 postAssetGroupEditR :: AssetGroupId -> Handler RepHtml
 postAssetGroupEditR gid = do
@@ -80,7 +80,7 @@ postAssetGroupEditR gid = do
                   redirect (AssetGroupViewR gid)
     _ -> defaultLayout $ do
             setTitle "Edit asset group."
-            $(widgetFile "asset-group-edit")
+            $(widgetFile "asset-group/edit")
 
 
 getAssetGroupViewAllR :: Handler RepHtml
@@ -91,7 +91,7 @@ getAssetGroupViewAllR = do
   let auth = thisUserRole [AdminRole, ResidentRole]
   defaultLayout $ do
       setTitle $ "All asset groups."
-      $(widgetFile "asset-group-all-view")
+      $(widgetFile "asset-group/all-view")
 
 getAssetGroupViewR :: AssetGroupId -> Handler RepHtml
 getAssetGroupViewR gid = do
@@ -110,4 +110,4 @@ getAssetGroupViewR gid = do
       
   defaultLayout $ do
       setTitle $ toHtml $ "Viewing asset group " ++ show (assetGroupName grp)
-      $(widgetFile "asset-group-view")
+      $(widgetFile "asset-group/view")

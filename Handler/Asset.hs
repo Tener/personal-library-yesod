@@ -70,7 +70,7 @@ assetRentedWidget aid = do
 
   let results = map (\ (a,b,Single c) -> (a,b,c)) results'
 
-  return $(widgetFile "asset-rented-widget")
+  return $(widgetFile "asset/rented-widget")
 
 ----
 
@@ -107,7 +107,7 @@ getAssetViewR aid = do
 
   defaultLayout $ do
            setTitle $ toHtml $ "Asset " ++ show (assetName asset)
-           $(widgetFile "asset-view")
+           $(widgetFile "asset/view")
 
 prepareAssetsToList assets = map (\a -> (formatAsset a, entityKey a)) assets
 
@@ -122,7 +122,7 @@ getAssetAllGeneric title filter'lst = do
 
   defaultLayout $ do
       setTitle title
-      $(widgetFile "asset-all-view")
+      $(widgetFile "asset/all-view")
 
 getAssetAllMusicR :: Handler RepHtml
 getAssetAllMusicR = getAssetAllGeneric "A list of all music assets." [AssetKind ==. AssetMusic]
@@ -142,7 +142,7 @@ getAssetNewR = do
   (fwidget, enctype) <- generateFormPost (assetForm Nothing $ prepareAssetsToList assets)
   defaultLayout $ do
       setTitle "A new asset."
-      $(widgetFile "asset-new")
+      $(widgetFile "asset/new")
 
 postAssetNewR :: Handler RepHtml
 postAssetNewR = do
@@ -154,7 +154,7 @@ postAssetNewR = do
                   redirect (AssetViewR aid)
     _ -> defaultLayout $ do
                   setTitle "A new asset."
-                  $(widgetFile "asset-new")
+                  $(widgetFile "asset/new")
 
 getAssetEditR :: AssetId -> Handler RepHtml
 getAssetEditR aid = do 
@@ -164,7 +164,7 @@ getAssetEditR aid = do
 
   defaultLayout $ do
       setTitle "Edit existing asset."
-      $(widgetFile "asset-edit")
+      $(widgetFile "asset/edit")
 
 postAssetEditR ::AssetId ->  Handler RepHtml
 postAssetEditR aid = do
@@ -177,7 +177,7 @@ postAssetEditR aid = do
                   redirect (AssetViewR aid)
     _ -> defaultLayout $ do
        setTitle "Edit existing asset."
-       $(widgetFile "asset-edit")
+       $(widgetFile "asset/edit")
 
 assetDeleteForm = renderTable (const <$> areq areYouSureField "Are you sure?" (Just False))
   where areYouSureField = check isSure boolField
@@ -190,7 +190,7 @@ getAssetDeleteR aid = do
   (fwidget, enctype) <- generateFormPost assetDeleteForm
   defaultLayout $ do
       setTitle "Deleting an asset."
-      $(widgetFile "asset-delete")
+      $(widgetFile "asset/delete")
 
 postAssetDeleteR ::AssetId ->  Handler RepHtml
 postAssetDeleteR aid = do
@@ -210,4 +210,4 @@ postAssetDeleteR aid = do
                                <p> <strong>Asset deleted.</strong> |]
     _ -> defaultLayout $ do
               setTitle "Deleting an asset."
-              $(widgetFile "asset-delete")
+              $(widgetFile "asset/delete")

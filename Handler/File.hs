@@ -52,7 +52,7 @@ getFileNewR aid = do
   (formWidget, formEnctype) <- generateFormPost fileUploadForm
   defaultLayout $ do
        setTitle "Upload new file."
-       $(widgetFile "file-new")
+       $(widgetFile "file/new")
   
 getFileSize :: FilePath -> IO Int64
 getFileSize fp = do
@@ -78,7 +78,7 @@ postFileNewR' aid = do
 
   defaultLayout $ do
        setTitle "Upload new file."
-       $(widgetFile "file-new")
+       $(widgetFile "file/new")
 
 postFileNewR :: AssetId -> Handler RepHtml
 postFileNewR aid = do
@@ -119,7 +119,7 @@ postFileNewR aid = do
       (formWidget, formEnctype) <- generateFormPost fileUploadForm
       defaultLayout $ do
              setTitle "Upload new file."
-             $(widgetFile "file-new")
+             $(widgetFile "file/new")
 
 -- view attributes
 
@@ -129,7 +129,7 @@ getFileViewR fid = do
   file <- runDB $ get404 fid
   defaultLayout $ do
        setTitle "File description."
-       $(widgetFile "file-view")
+       $(widgetFile "file/view")
   
 -- download
 
@@ -219,7 +219,7 @@ getFileDeleteR fid = do
   (fwidget, enctype) <- generateFormPost fileDeleteForm
   defaultLayout $ do
       setTitle "Deleting a file."
-      $(widgetFile "file-delete")
+      $(widgetFile "file/delete")
 
 -- | delete file from db and disk.
 deleteFile :: Entity File -> Handler ()
@@ -242,4 +242,4 @@ postFileDeleteR fid = do
                        <p> <strong>File deleted.</strong> |]
     _ -> defaultLayout $ do
               setTitle "Deleting a file."
-              $(widgetFile "file-delete")
+              $(widgetFile "file/delete")

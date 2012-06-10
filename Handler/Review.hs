@@ -45,11 +45,11 @@ postReviewDeleteR rid = do
                                         <p> <strong>Review of an <a href=@{AssetViewR (reviewWhat review)}>item</a> deleted.</strong> |]
     _ -> defaultLayout $ do
             setTitle "Deleting a review."
-            $(widgetFile "review-delete")
+            $(widgetFile "review/delete")
 
 getReviewDeleteR rid = do
   review <- runDB $ get404 rid
   (fwidget, enctype) <- generateFormPost reviewDeleteForm
   defaultLayout $ do
     setTitle "Deleting a review."
-    $(widgetFile "review-delete")
+    $(widgetFile "review/delete")

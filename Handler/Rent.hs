@@ -22,7 +22,7 @@ assetRentFormWidget aid uid = do
   free <- checkAssetFree aid
   isAdmin <- checkAdminUser
   isGuest <- checkGuestUser
-  return $(widgetFile "asset-rent-form-widget")
+  return $(widgetFile "asset/rent-form-widget")
 
 assetRentFormWidgetR :: AssetId -> Handler Widget
 assetRentFormWidgetR aid = do
@@ -87,7 +87,7 @@ getRentViewR rid = do
 
   defaultLayout $ do
     setTitle "View rental"
-    $(widgetFile "rental-view")
+    $(widgetFile "rental/view")
 
 postRentDeleteR, getRentDeleteR :: RentId -> Handler RepHtml
 postRentDeleteR rid = do
@@ -100,14 +100,14 @@ postRentDeleteR rid = do
                                         <p> <strong>Rental of an <a href=@{AssetViewR (rentWhat rent)}>item</a> deleted.</strong> |]
     _ -> defaultLayout $ do
             setTitle "Deleting a rental."
-            $(widgetFile "rental-delete")
+            $(widgetFile "rental/delete")
 
 getRentDeleteR rid = do
   rent <- runDB $ get404 rid
   (fwidget, enctype) <- generateFormPost rentalDeleteForm
   defaultLayout $ do
     setTitle "Deleting a rental."
-    $(widgetFile "rental-delete")
+    $(widgetFile "rental/delete")
 
 --
 
@@ -124,14 +124,14 @@ postRentAuthorizeR rid = do
                                         <p> <strong>Rental of an <a href=@{AssetViewR (rentWhat rent)}>item</a> authorized.</strong> |]
     _ -> defaultLayout $ do
             setTitle "Deleting a rental."
-            $(widgetFile "rental-authorize")
+            $(widgetFile "rental/authorize")
 
 getRentAuthorizeR rid = do
   rent <- runDB $ get404 rid
   (fwidget, enctype) <- generateFormPost rentalAuthorizeForm
   defaultLayout $ do
     setTitle "Deleting a rental."
-    $(widgetFile "rental-authorize")
+    $(widgetFile "rental/authorize")
 
 
 --
@@ -152,7 +152,7 @@ postRentReturnR rid = do
                                         <p> <strong><a href=@{AssetViewR (rentWhat rent)}>Item</a> returned on #{show today}.</strong> |]
     _ -> defaultLayout $ do
             setTitle "Returning an item."
-            $(widgetFile "rental-return")
+            $(widgetFile "rental/return")
 
 getRentReturnR :: RentId -> Handler RepHtml
 getRentReturnR rid = do
@@ -161,7 +161,7 @@ getRentReturnR rid = do
   (fwidget, enctype) <- generateFormPost rentalReturnForm
   defaultLayout $ do
     setTitle "Returning an item."
-    $(widgetFile "rental-return")
+    $(widgetFile "rental/return")
 --
 
 -- rental forms
@@ -193,13 +193,6 @@ requireAssetFree :: AssetId -> Handler ()
 requireAssetFree aid = do
   f <- checkAssetFree aid
   when (not f) (invalidArgs ["This asset is currently unavailable."])
-
--- getRentNewGuestR :: AssetId -> Handler RepHtml
--- getRentNewGuestR aid = do
---   asset :: Asset <- runDB $ get404 aid
---   user <- requireAuth
---  
---   undefined
 
 postRentNewGuestR :: AssetId -> Handler RepHtml
 postRentNewGuestR aid = do

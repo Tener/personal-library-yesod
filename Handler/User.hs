@@ -33,7 +33,7 @@ getUserViewR uid = do
   (fwidget, enctype) <- generateFormPost (userForm (Just user))
   defaultLayout $ do
       setTitle $ toHtml $ "User " ++ show (userIdent user)
-      $(widgetFile "user-view")
+      $(widgetFile "user/view")
 
 postUserEditR :: UserId -> Handler RepHtml
 postUserEditR uid = do
@@ -50,7 +50,7 @@ getUserAllR = do
   users :: [Entity User] <- runDB $ selectList [] [Asc UserId]
   defaultLayout $ do
       setTitle "A list of all users."
-      $(widgetFile "users-all")
+      $(widgetFile "user/all")
 
 --- delete user
 
@@ -65,7 +65,7 @@ getUserDeleteR key = do
   (fwidget, enctype) <- generateFormPost userDeleteForm
   defaultLayout $ do
       setTitle "Deleting a user."
-      $(widgetFile "user-delete")
+      $(widgetFile "user/delete")
 
 postUserDeleteR ::UserId ->  Handler RepHtml
 postUserDeleteR key = do
@@ -85,5 +85,5 @@ postUserDeleteR key = do
                                <p> <strong>User deleted.</strong> |]
     _ -> defaultLayout $ do
               setTitle "Deleting a user."
-              $(widgetFile "user-delete")
+              $(widgetFile "user/delete")
 
