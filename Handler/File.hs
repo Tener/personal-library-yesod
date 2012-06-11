@@ -5,7 +5,7 @@ module Handler.File where
 import Import
 import Handler.Utils
 
-import Codec.Archive.ZipHack
+import Codec.Archive.Streaming
 import Control.Monad
 import Data.Digest.CRC32 (crc32)
 import Data.Int (Int64)
@@ -136,7 +136,7 @@ getFileGetR fid = do
   file <- runDB $ get404 fid
   redirect (FileGetNameR fid (fileOriginalName file))
 
-getFileGetNameR :: FileId -> Text -> Handler RepHtml -- FIXME: figure out right reply content type
+getFileGetNameR :: FileId -> Text -> Handler RepPlain -- FIXME: figure out right reply content type
 getFileGetNameR fid _name = do
   file <- runDB $ get404 fid
   setHeader "Content-Disposition" (Data.Text.concat ["attachment; filename=\"",(fileOriginalName file), "\";"])

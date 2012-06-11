@@ -1,62 +1,11 @@
 {-# LANGUAGE CPP #-}
-------------------------------------------------------------------------
--- |
--- Module      : Codec.Archive.ZipHack
--- Copyright   : John MacFarlane, Krzysztof Skrzętnicki
--- License     : GPL 2 (see LICENSE)
---
--- Maintainer  : John MacFarlane < jgm at berkeley dot edu >
--- Stability   : unstable
--- Portability : so far only tested on GHC
---
--- The zip-archive library provides functions for creating, modifying,
--- and extracting files from zip archives.
---
--- Certain simplifying assumptions are made about the zip archives: in
--- particular, there is no support for encryption, zip files that span
--- multiple disks, ZIP64, OS-specific file attributes, or compression
--- methods other than Deflate.  However, the library should be able to
--- read the most common zip archives, and the archives it produces should
--- be readable by all standard unzip programs.
---
--- As an example of the use of the library, a standalone zip archiver
--- and extracter, Zip.hs, is provided in the source distribution.
---
--- For more information on the format of zip archives, consult
--- <http://www.pkware.com/documents/casestudies/APPNOTE.TXT>
-------------------------------------------------------------------------
 
--- this is hacked version of module Codec.Archive.Zip.
--- Entry's eCompressedData field is removed. instead the compressed files are passed as an extra parameter where needed.
--- only fromArchive is available.
+-- Module derived from Codec.Archive.Zip from zip-archive library by John MacFarlane licensed under BSD (see LICENSE in zip-archive)
 
-module Codec.Archive.ZipHack
---       (
--- 
---       -- * Data structures
---         Archive (..)
---       , Entry (..)
---       , CompressionMethod (..)
---       , ZipOption (..)
---       , emptyArchive
--- 
---       -- * Pure functions for working with zip archives
---       , toArchive
---       , fromArchive
---       , filesInArchive
---       , addEntryToArchive
---       , deleteEntryFromArchive
---       , findEntryByPath
---       , fromEntry
---       , toEntry
--- 
---       -- * IO functions for working with zip archives
---       , readEntry
---       , writeEntry
---       , addFilesToArchive
---       , extractFilesFromArchive
--- 
---       ) where
+module Codec.Archive.Streaming 
+
+-- FIXME: provide sensible export list
+-- ()
 
 where
 

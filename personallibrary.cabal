@@ -42,7 +42,7 @@ library
                      Handler.Utils
 
                      Handler.File             
-                     Codec.Archive.ZipHack
+                     Codec.Archive.Streaming
 
 
     if flag(dev) || flag(library-only)
