@@ -136,7 +136,7 @@ getFileGetR fid = do
   file <- runDB $ get404 fid
   redirect (FileGetNameR fid (fileOriginalName file))
 
-getFileGetNameR :: FileId -> Text -> Handler RepPlain -- FIXME: figure out right reply content type
+getFileGetNameR :: FileId -> Text -> Handler ()
 getFileGetNameR fid _name = do
   file <- runDB $ get404 fid
   setHeader "Content-Disposition" (Data.Text.concat ["attachment; filename=\"",(fileOriginalName file), "\";"])
